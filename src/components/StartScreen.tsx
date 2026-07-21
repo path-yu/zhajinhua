@@ -5,9 +5,10 @@ import { HAND_TYPE_ORDER } from '../game/handEvaluator';
 
 interface StartScreenProps {
   onStart: (config: GameConfig) => void;
+  onOpenAudioSettings: () => void;
 }
 
-export function StartScreen({ onStart }: StartScreenProps) {
+export function StartScreen({ onStart, onOpenAudioSettings }: StartScreenProps) {
   const [playerCount, setPlayerCount] = useState(5);
   const [startingChips, setStartingChips] = useState(1000);
   const [ante, setAnte] = useState(10);
@@ -101,12 +102,20 @@ export function StartScreen({ onStart }: StartScreenProps) {
           </div>
 
           {/* 开始按钮 */}
-          <button
-            onClick={handleStart}
-            className="btn-3d w-full rounded-xl py-4 bg-gradient-to-b from-amber-400 to-amber-600 text-gray-900 font-black text-xl border-2 border-amber-700 btn-glow-gold font-display tracking-wider"
-          >
-            🎴 开 始 游 戏
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleStart}
+              className="btn-3d flex-1 rounded-xl py-4 bg-gradient-to-b from-amber-400 to-amber-600 text-gray-900 font-black text-xl border-2 border-amber-700 btn-glow-gold font-display tracking-wider"
+            >
+              🎴 开 始 游 戏
+            </button>
+            <button
+              onClick={onOpenAudioSettings}
+              className="btn-3d rounded-xl border-2 border-white/20 bg-white/10 px-4 py-3 text-sm text-slate-100 hover:bg-white/15"
+            >
+              🎵 音频
+            </button>
+          </div>
         </div>
 
         {/* 牌型说明 */}

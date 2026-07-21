@@ -16,30 +16,31 @@ const TYPE_COLORS: Record<LogEntry['type'], string> = {
 };
 
 export function GameLog({ log }: GameLogProps) {
-  const endRef = useRef<HTMLDivElement>(null);
-  const recent = log.slice(-8);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const container = containerRef.current;
+    if (!container) return;
+    container.scrollTop = container.scrollHeight;
   }, [log.length]);
 
   return (
-    <div className="rounded-xl border border-gray-800/60 bg-black/50 backdrop-blur p-2 h-full overflow-hidden">
-      <div className="text-[10px] text-gray-500 px-1 mb-1 font-display tracking-wider">
+    <div className="rounded-xl border border-gray-800/60 bg-black/60 backdrop-blur p-3 h-full flex flex-col">
+      <div className="text-sm text-gray-300 px-1 mb-3 font-display tracking-wider uppercase">
         📜 游戏日志
       </div>
-      <div className="overflow-y-auto scrollbar-thin h-[calc(100%-1.5rem)] flex flex-col-reverse">
-        <div className="flex flex-col gap-0.5">
-          {recent.map((entry) => (
-            <div
-              key={entry.id}
-              className={cn('text-[10px] leading-tight px-1 fade-in', TYPE_COLORS[entry.type])}
-            >
-              {entry.text}
-            </div>
-          ))}
-          <div ref={endRef} />
-        </div>
+      <div
+        ref={containerRef}
+        className="overflow-y-auto scrollbar-thin flex-1 min-h-0 flex flex-col gap-0.5"
+      >
+        {log.map((entry) => (
+          <div
+            key={entry.id}
+            className={cn('text-sm leading-5 px-2 py-1.5 rounded-xl', TYPE_COLORS[entry.type])}
+          >
+            {entry.text}
+          </div>
+        ))}
       </div>
     </div>
   );

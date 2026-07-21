@@ -1,6 +1,8 @@
 // ===== 炸金花游戏主应用 =====
 import { useGame } from './hooks/useGame';
+import { useAudio, useGameSounds } from './hooks/useAudio';
 import { StartScreen } from './components/StartScreen';
+import { AudioSettingsPanel } from './components/AudioSettingsPanel';
 import { PokerTable } from './components/PokerTable';
 import { RaiseModal } from './components/RaiseModal';
 import { PKEffect } from './components/PKEffect';
@@ -9,11 +11,64 @@ import { getHumanPlayer } from './game/gameEngine';
 
 export default function App() {
   const game = useGame();
+  const audio = useAudio();
   const { state } = game;
+
+  useGameSounds(state, audio.settings, audio.play, audio.speak);
+
+  const handleSee = () => {
+    void audio.unlockAudio();
+    game.doSee();
+  };
+
+  const handleFold = () => {
+    void audio.unlockAudio();
+    game.doFold();
+  };
+
+  const handleCall = () => {
+    void audio.unlockAudio();
+    game.doCall();
+  };
+
+  const handleOpenRaise = () => {
+    void audio.unlockAudio();
+    game.openRaise();
+  };
+
+  const handleOpenPK = () => {
+    void audio.unlockAudio();
+    game.openPKSelect();
+  };
+
+  const handlePK = (targetId: number) => {
+    void audio.unlockAudio();
+    game.doPK(targetId);
+  };
+
+  const handleStart = (config: Parameters<typeof game.start>[0]) => {
+    void audio.unlockAudio();
+    game.start(config);
+  };
+
+  const handleToggleSettings = () => {
+    void audio.unlockAudio();
+    audio.toggleSettings();
+  };
 
   // 未开始 → 开始界面
   if (state.phase === 'idle') {
-    return <StartScreen onStart={game.start} />;
+    return (
+      <>
+        <StartScreen onStart={handleStart} onOpenAudioSettings={handleToggleSettings} />
+        <AudioSettingsPanel
+          open={audio.settingsOpen}
+          settings={audio.settings}
+          onClose={audio.toggleSettings}
+          updateSettings={audio.updateSettings}
+        />
+      </>
+    );
   }
 
   const humanPlayer = getHumanPlayer(state);
@@ -29,13 +84,20 @@ export default function App() {
         aiThinking={game.aiThinking}
         aiThinkingPlayer={game.aiThinkingPlayer}
         pkSelecting={game.pkSelecting}
-        onSee={game.doSee}
-        onFold={game.doFold}
-        onCall={game.doCall}
-        onRaise={game.openRaise}
-        onPK={game.openPKSelect}
-        onSelectTarget={game.doPK}
+        onSee={handleSee}
+        onFold={handleFold}
+        onCall={handleCall}
+        onRaise={handleOpenRaise}
+        onPK={handleOpenPK}
+        onSelectTarget={handlePK}
         onCancelPK={game.cancelPKSelect}
+        onOpenAudioSettings={handleToggleSettings}
+      />
+      <AudioSettingsPanel
+        open={audio.settingsOpen}
+        settings={audio.settings}
+        onClose={audio.toggleSettings}
+        updateSettings={audio.updateSettings}
       />
 
       {/* 加注弹窗 */}

@@ -39,13 +39,13 @@ function ActionButton({ label, sublabel, icon, onClick, disabled, variant }: Btn
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        'btn-3d flex-1 min-w-0 rounded-xl border-2 px-2 py-3 flex flex-col items-center justify-center font-black shadow-lg shadow-black/25',
+        'btn-3d flex-1 min-w-0 rounded-lg border-2 px-1.5 py-2 flex flex-col items-center justify-center font-black shadow-lg shadow-black/25',
         VARIANT_CLASSES[variant],
       )}
     >
-      <span className="text-xl leading-none">{icon}</span>
-      <span className="text-sm sm:text-base mt-0.5 tracking-wide">{label}</span>
-      {sublabel && <span className="text-[10px] sm:text-xs opacity-90 font-extrabold">{sublabel}</span>}
+      <span className="text-base leading-none">{icon}</span>
+      <span className="text-xs mt-0.5 tracking-wide">{label}</span>
+      {sublabel && <span className="text-[9px] opacity-90 font-extrabold">{sublabel}</span>}
     </button>
   );
 }
@@ -79,14 +79,14 @@ export function ControlPanel({
     <div className="relative w-full">
       {/* 倒计时环形进度条 */}
       {isHumanTurn && (
-        <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-10">
+        <div className="absolute -top-10 left-1/2 -translate-x-1/2 z-10">
           <CountdownRing seconds={countdown} total={15} />
         </div>
       )}
 
-      <div className="rounded-2xl border-2 border-amber-300/35 bg-slate-950/78 p-3 shadow-2xl backdrop-blur">
+      <div className="rounded-xl border-2 border-amber-300/35 bg-slate-950/78 p-2 shadow-2xl backdrop-blur">
         {/* 状态提示条 */}
-        <div className="mb-2 flex items-center justify-between">
+        <div className="mb-1.5 flex items-center justify-between">
           <div className="flex items-center gap-2">
             {pkSelecting ? (
               <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/50">
@@ -115,7 +115,7 @@ export function ControlPanel({
         </div>
 
         {/* 按钮组 */}
-        <div className="flex gap-2">
+        <div className="flex gap-1.5">
           <ActionButton
             label="看牌"
             icon="👁"
